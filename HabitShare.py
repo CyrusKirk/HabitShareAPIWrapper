@@ -2,22 +2,30 @@ import requests
 import json
 from datetime import datetime
 
-#TODO: implement fetching token/cookie with username/password
-#      update constructor accordingly
-
+LOGIN_URL = 'https://habitshare.herokuapp.com/rest-auth/login/'
 HABITS_URL = 'https://habitshare.herokuapp.com/habits'
 FRIENDS_URL = 'https://habitshare.herokuapp.com/api/v3/friends'
 MESSAGE_URL = 'https://habitshare.herokuapp.com/messages'
 FRIENDHABIT_URL = 'https://habitshare.herokuapp.com/api/v3/users/'
 
 class HabitShare(object):
-    def __init__(self,token, cookie):
+    def __init__(self, username, password):
         """
+        Fetches key for authorized user as well as habits and friends (should be broken out into other methods)
         habits - authorized user's set of habits and related data including trackers, last checkin, etc
         """
+        basic_headers = {
+            'Content-type':'application/json', 
+            'Accept':'application/json'
+        }
+        body = json.dumps({
+            "password": password,
+            "username": username
+        })
+        self.token = requests.post(LOGIN_URL, headers=basic_headers, data=body).json()['key']
+        print(self.token)
         self.auth_payload = {
-            'Authorization': 'Token ' + token,
-            'Cookie': 'csrftoken=' + cookie,
+            'Authorization': 'Token ' + self.token,
             'Content-type':'application/json', 
             'Accept':'application/json'
         }
