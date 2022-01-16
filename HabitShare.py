@@ -32,6 +32,10 @@ class HabitShare(object):
         self.habits = requests.get(HABITS_URL, headers=self.auth_payload).json()
         self.friends = requests.get(FRIENDS_URL, headers=self.auth_payload).json()
     
+    def sync(self):
+        self.habits = requests.get(HABITS_URL, headers=self.auth_payload).json()
+        self.friends = requests.get(FRIENDS_URL, headers=self.auth_payload).json()
+    
     def getFriend(self, friend):
         """
         Return the id of a friend given their exact name in HabitShare.
