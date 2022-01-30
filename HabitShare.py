@@ -23,7 +23,6 @@ class HabitShare(object):
             "username": username
         })
         self.token = requests.post(LOGIN_URL, headers=basic_headers, data=body).json()['key']
-        print(self.token)
         self.auth_payload = {
             'Authorization': 'Token ' + self.token,
             'Content-type':'application/json', 
@@ -60,7 +59,8 @@ class HabitShare(object):
         return r
 
     def friendHabitTrackers(self, friend):
-        """Returns dict of habit data from a friend
+        """
+        Returns dict of habit data from a friend
         """
         friend_id = str(self.getFriend(friend)['id'])
         fullFriendData = requests.get(FRIENDHABIT_URL+friend_id, headers=self.auth_payload).json()['habits']
